@@ -19,6 +19,9 @@ public class LoginController {
 
     @GetMapping(path = "/login")
     public String login(Model model) {
+        if (model.containsAttribute("signupSuccess")) {
+            model.addAttribute("signupSuccess", model.getAttribute("signupSuccess"));
+        }
         return "login";
     }
 }

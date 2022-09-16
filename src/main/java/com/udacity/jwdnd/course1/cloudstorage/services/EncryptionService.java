@@ -32,6 +32,7 @@ public class EncryptionService {
     }
 
     public String decryptValue(String data, String key) {
+        System.out.println("i m in decryptvalue");
         byte[] decryptedValue = null;
 
         try {
@@ -41,7 +42,7 @@ public class EncryptionService {
             decryptedValue = cipher.doFinal(Base64.getDecoder().decode(data));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException
                 | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-            logger.error(e.getMessage());
+            e.printStackTrace();
         }
 
         return new String(decryptedValue);

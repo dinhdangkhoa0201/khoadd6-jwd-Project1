@@ -1,31 +1,19 @@
 package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletRequest;
-
-@ControllerAdvice
+@Controller
 public class IndexController {
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleError(HttpServletRequest request, Exception e)   {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return new ModelAndView("login");
-        }
-        return new ModelAndView("home");
+    private CredentialService credentialService;
+
+    public IndexController(CredentialService credentialService) {
+        this.credentialService = credentialService;
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ModelAndView handleError404(HttpServletRequest request, Exception e)   {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return new ModelAndView("login");
-        }
-        return new ModelAndView("home");
+    @GetMapping(path = "/error")
+    public String error() {
+        return "error/404";
     }
 }

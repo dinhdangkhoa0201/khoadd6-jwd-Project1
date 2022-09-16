@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -26,8 +27,10 @@ public class HomeController {
     private NoteService noteService;
     private FileService fileService;
     private UserService userService;
+    private EncryptionService encryptionService;
 
-    private HomeController(CredentialService credentialService, NoteService noteService, FileService fileService, UserService userService) {
+    private HomeController(EncryptionService encryptionService, CredentialService credentialService, NoteService noteService, FileService fileService, UserService userService) {
+        this.encryptionService = encryptionService;
         this.credentialService = credentialService;
         this.noteService = noteService;
         this.fileService = fileService;
@@ -69,6 +72,7 @@ public class HomeController {
         if (model.containsAttribute("noteError")) {
             model.addAttribute("noteError", model.getAttribute("noteError"));
         }
+        model.addAttribute("encryptionService",encryptionService);
         return "home";
     }
 }

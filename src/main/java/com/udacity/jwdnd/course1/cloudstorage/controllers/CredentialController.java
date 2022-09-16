@@ -3,7 +3,10 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import java.security.SecureRandom;
+import java.util.Base64;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,10 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CredentialController {
     private CredentialService credentialService;
     private UserService userService;
+    private EncryptionService encryptionService;
 
-    public CredentialController(CredentialService credentialService, UserService userService) {
+    public CredentialController(CredentialService credentialService, UserService userService, EncryptionService encryptionService) {
         this.credentialService = credentialService;
         this.userService = userService;
+        this.encryptionService = encryptionService;
     }
 
     @PostMapping
@@ -35,6 +40,13 @@ public class CredentialController {
             return "redirect:/home";
         }
         int rs = 0;
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encodedKey);
+        credential.setKey(encodedKey);
+        credential.setPassword(encryptedPassword);
         credential.setUserId(user.getUserId());
         if (credential.getCredentialId() != null) {
             rs = credentialService.updateCredential(credential.getCredentialId(), credential);

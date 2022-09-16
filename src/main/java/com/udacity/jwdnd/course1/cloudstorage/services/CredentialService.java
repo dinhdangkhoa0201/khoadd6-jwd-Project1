@@ -19,12 +19,7 @@ public class CredentialService {
     }
 
     public int createCredential(Credential credential) {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-        String hashedPassword = hashService.getHashedValue(credential.getPassword(), encodedSalt);
-        return credentialMapper.insert(new Credential(null, credential.getUrl(), credential.getUserName(), encodedSalt, hashedPassword, credential.getUserId()));
+        return credentialMapper.insert(new Credential(null, credential.getUrl(), credential.getUserName(), credential.getKey(), credential.getPassword(), credential.getUserId()));
     }
 
     public int updateCredential(Integer credentialId, Credential credential) {
