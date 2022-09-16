@@ -23,12 +23,7 @@ public class CredentialService {
     }
 
     public int updateCredential(Integer credentialId, Credential credential) {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-        String hashedPassword = hashService.getHashedValue(credential.getPassword(), encodedSalt);
-        return credentialMapper.update(credentialId, new Credential(credential.getCredentialId(), credential.getUrl(), credential.getUserName(), encodedSalt, hashedPassword, credential.getUserId()));
+        return credentialMapper.update(credentialId, new Credential(credential.getCredentialId(), credential.getUrl(), credential.getUserName(), credential.getKey(), credential.getPassword(), credential.getUserId()));
     }
 
     public Credential getCredential(Integer credentialId) {

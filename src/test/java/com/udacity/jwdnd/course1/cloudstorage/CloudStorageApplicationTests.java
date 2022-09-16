@@ -273,8 +273,9 @@ class CloudStorageApplicationTests {
     public void editCredential() {
         doLogIn("LFT", "123");
         WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
-        addCredentialData();
-        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonEditCredential2"))).click();
+//        addCredentialData();
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab"))).click();
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("buttonEditCredential1"))).click();
 
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url"))).clear();
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url"))).sendKeys("http://localhost:8081/login");
@@ -286,7 +287,7 @@ class CloudStorageApplicationTests {
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab"))).click();
         WebElement tableElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credentialTable")));
         List<WebElement> listRow = tableElement.findElements(By.tagName("tr"));
-        WebElement firstDataRow = listRow.get(2);
+        WebElement firstDataRow = listRow.get(1);
         WebElement credentialUrlElement = firstDataRow.findElement(By.tagName("th"));
         WebElement credentialUserNameElement = firstDataRow.findElements(By.tagName("td")).get(1);
 
@@ -300,11 +301,11 @@ class CloudStorageApplicationTests {
         WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
 //        addCredentialData();
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab"))).click();
-        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("deleteCredential2"))).click();
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("deleteCredential1"))).click();
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab"))).click();
         WebElement tableElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credentialTable")));
         List<WebElement> listRow = tableElement.findElements(By.tagName("tr"));
-        Assertions.assertEquals(2, listRow.size());
+        Assertions.assertEquals(1, listRow.size());
     }
 
     private void addCredentialData() {
